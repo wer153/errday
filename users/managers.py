@@ -27,3 +27,6 @@ class UserManager(models.Manager):
         else:
             email = '@'.join([email_name, domain_part.lower()])
         return email
+
+    def get_by_natural_key(self, email):
+        return self.get(email=email)
