@@ -3,13 +3,13 @@ from django.contrib.auth.hashers import make_password
 
 
 class UserManager(models.Manager):
-    def create(self, email, password, date_of_birth=None, is_admin=False, is_superuser=False):
+    def create(self, email, password, date_of_birth=None, is_staff=False, is_superuser=False):
         self.normalize_email(email)
         return super().create(
             email=email,
             password=make_password(password),
             date_of_birth=date_of_birth,
-            is_admin=is_admin,
+            is_staff=is_staff,
             is_superuser=is_superuser,
         )
 
