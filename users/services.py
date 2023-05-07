@@ -6,6 +6,7 @@ from users.operations import generate_nick_name
 
 User: AuthUser = get_user_model()
 
+
 def signup(
     email: str,
     image: str,
