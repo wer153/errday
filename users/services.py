@@ -6,7 +6,6 @@ from users.operations import generate_nick_name
 
 User: AuthUser = get_user_model()
 
-
 def signup(
     email: str,
     image: str,
@@ -15,6 +14,7 @@ def signup(
     if not nick_name:
         nick_name = generate_nick_name()
     with atomic():
-        user = User.objects.create(email=email, password='password')
+        password = User.objects.make_random_password()
+        user = User.objects.create(email=email, password=password)
         Profile.objects.create(user=user, nick_name=nick_name, image=image)
     return user
