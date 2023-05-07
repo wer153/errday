@@ -1,11 +1,8 @@
 import random
 
-from django.utils import timezone
-
 
 def generate_nick_name():
-    today = timezone.localdate()
-    return f'{random.choice(locations)}{random.choice(titles)}{str(today)}'
+    return f'{random.choice(locations)}{random.choice(titles)}'
 
 
 titles = [
