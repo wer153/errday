@@ -15,6 +15,6 @@ def signup(
     if not nick_name:
         nick_name = generate_nick_name()
     with atomic():
-        user = User.objects.create(email=email, image=image)
-        Profile.objects.create(user=user, nick_name=nick_name)
+        user = User.objects.create(email=email, password='password')
+        Profile.objects.create(user=user, nick_name=nick_name, image=image)
     return user
