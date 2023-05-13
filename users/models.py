@@ -24,13 +24,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class UserFollowing(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followings')
-    following_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
-
-
 class Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     nick_name = models.CharField(max_length=20, unique=True)
+
+
+class Following(models.Model):
+    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followings')
+    following = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followers')
