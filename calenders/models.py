@@ -8,6 +8,8 @@ User = get_user_model()
 
 
 class Calender(models.Model):
+    MAX_COUNT = 1
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(to=User, related_name='calenders', on_delete=models.PROTECT)
 

@@ -2,12 +2,28 @@ from datetime import date
 
 from django.shortcuts import get_object_or_404
 from ninja import Router
+from ninja.errors import ValidationError
 
-from calenders.dtos import PostListOut, PostDetailOut, PostDetailIn, Emoji
-from calenders.models import Post
-
+from calenders.dtos import PostListOut, PostDetailOut, PostDetailIn, Emoji, CreateCalenderOut, CalenderListOut
+from calenders.models import Post, Calender
 
 router = Router()
+
+
+@router.get('')
+def get_calender_list(request) -> list[CalenderListOut]:
+    calender = get_object_or_404(Calender, ownser=request.user)
+    return [CalenderListOut(id=calender.id)]
+
+
+@router.post('')
+def create_calender(request) -> CreateCalenderOut:
+    count = Calender.objects.filter(owner=request.user).count()
+    if Calender.MAX_COUNT < count:
+        raise ValidationError(errors=f'calender count exceeds max count {count}/{Calender.MAX_COUNT}')
+    calender = Calender.objects.create(owner=request.user)
+    return CalenderListOut(id=calender.id)
+
 
 @router.get('/{calender_id}/posts')
 def get_post_list(request, calender_id: str, start_date: date | None = None, end_date: date | None = None):

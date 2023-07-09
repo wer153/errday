@@ -8,6 +8,14 @@ class Emoji(Enum):
     pass
 
 
+class CalenderListOut(Schema):
+    id: str
+
+
+class CreateCalenderOut(Schema):
+    id: str
+
+
 class PostListOut(Schema):
     id: str
     thumbnail: str
