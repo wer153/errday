@@ -20,3 +20,8 @@ class PostDetailOut(Schema):
     image: str
     post_date: date
     emoji: Emoji
+
+
+class PostDetailIn(Schema):
+    image: str
+    emoji: Emoji
