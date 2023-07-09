@@ -50,3 +50,11 @@ def put_post_detail(request, post_date: date, payload: PostDetailIn):
         post_date=post.post_date,
         emoji=post.emoji,
     )
+
+
+def delete_post_detail(request, post_date: date):
+    Post.objects.filter(
+        user=request.user,
+        post_date=post_date,
+    ).delete()
+    return None
