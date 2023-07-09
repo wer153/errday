@@ -9,8 +9,8 @@ from calenders.models import Post
 
 router = Router()
 
-@router.get('/calenders/{calender_id}/posts')
-def get_post_list(request, calender_id: str, start_date: date | None = None, end_date: date | None = None, emoji: Emoji):
+@router.get('/{calender_id}/posts')
+def get_post_list(request, calender_id: str, start_date: date | None = None, end_date: date | None = None):
     date_filter = {}
     if start_date:
         date_filter |= {'post_date__gte': start_date}
@@ -19,7 +19,6 @@ def get_post_list(request, calender_id: str, start_date: date | None = None, end
     posts = Post.objects.filter(
         calender=calender_id,
         user=request.user,
-        emoji=emoji,
         **date_filter,
     )
     return [
@@ -33,7 +32,7 @@ def get_post_list(request, calender_id: str, start_date: date | None = None, end
     ]
 
 
-@router.get('/calenders/{calender_id}/posts/{post_date}')
+@router.get('/{calender_id}/posts/{post_date}')
 def get_post_detail(request, calender_id: str, post_date: date):
     post: Post = get_object_or_404(
         Post,
@@ -49,7 +48,7 @@ def get_post_detail(request, calender_id: str, post_date: date):
     )
 
 
-@router.put('/calenders/{calender_id}/posts/{post_date}')
+@router.put('/{calender_id}/posts/{post_date}')
 def put_post_detail(request, calender_id: str, post_date: date, payload: PostDetailIn):
     post, created = Post.objects.update_or_create(
         calender=calender_id,
@@ -66,7 +65,7 @@ def put_post_detail(request, calender_id: str, post_date: date, payload: PostDet
     )
 
 
-@router.delete('/calenders/{calender_id}/posts/{post_date}')
+@router.delete('/{calender_id}/posts/{post_date}')
 def delete_post_detail(request, calender_id: str, post_date: date):
     Post.objects.filter(
         calender=calender_id,
