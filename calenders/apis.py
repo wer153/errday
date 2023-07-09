@@ -28,7 +28,7 @@ def get_post_list(request, start_date: date | None = None, end_date: date | None
 
 
 def get_post_detail(request, post_date: date):
-    post: Post = get_object_or_404(Post, post_date=post_date)
+    post: Post = get_object_or_404(Post, post_date=post_date, user=request.user)
     return PostDetailOut(
         id=post.id,
         image=post.image,
