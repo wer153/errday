@@ -38,11 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
-    'oauth2_provider',
-    'corsheaders',
-    'rest_framework',
-    'django_extensions',
-    'django.utils.six',
+    'calenders',
 ]
 
 MIDDLEWARE = [
