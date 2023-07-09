@@ -8,3 +8,4 @@ class Post(models.Model):
     post_datetime = models.DateTimeField(auto_now_add=True)
     image = models.ImageField()
     thumbnail = models.ImageField(blank=True, null=True)
+    emoji = models.CharField(blank=True, max_length=10)
