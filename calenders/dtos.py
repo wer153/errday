@@ -18,5 +18,5 @@ class PostListOut(Schema):
 class PostDetailOut(Schema):
     id: str
     image: str
-    postDate: date
+    post_date: date
     emoji: Emoji

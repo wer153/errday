@@ -1,17 +1,17 @@
 from datetime import date
 
-from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
-from calenders.dtos import PostListOut
+from calenders.dtos import PostListOut, PostDetailOut
 from calenders.models import Post
 
 
 def get_post_list(request, start_date: date | None = None, end_date: date | None = None):
     date_filter = {}
     if start_date:
-        date_filter |= {'post_datetime__date__gte': start_date}
+        date_filter |= {'post_date__gte': start_date}
     if end_date:
-        date_filter |= {'post_datetime__date__lt': end_date}
+        date_filter |= {'post_date__lt': end_date}
     posts = Post.objects.filter(
         user=request.user,
         **date_filter,
@@ -20,8 +20,18 @@ def get_post_list(request, start_date: date | None = None, end_date: date | None
         PostListOut(
             id=post.id,
             thumbnail=post.thumbnail,
-            post_date=timezone.localdate(post.post_datetime),
+            post_date=post.post_date,
             emoji=post.emoji,
         )
         for post in posts
     ]
+
+
+def get_post_detail(request, post_date: date):
+    post: Post = get_object_or_404(Post, post_date=post_date)
+    return PostDetailOut(
+        id=post.id,
+        image=post.image,
+        post_date=post.post_date,
+        emoji=post.emoji,
+    )

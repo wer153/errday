@@ -9,7 +9,7 @@ User = get_user_model()
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    post_datetime = models.DateTimeField(auto_now_add=True)
+    post_date = models.DateField(unique=True)
     image = models.ImageField()
     thumbnail = models.ImageField(blank=True, null=True)
     emoji = models.CharField(blank=True, max_length=10)
