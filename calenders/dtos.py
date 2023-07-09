@@ -10,8 +10,8 @@ class Emoji(Enum):
 
 class PostListOut(Schema):
     id: str
-    thumbnail_image: str
-    postDate: date
+    thumbnail: str
+    post_date: date
     emoji: Emoji
 
 
