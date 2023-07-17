@@ -12,8 +12,8 @@ router = Router()
 
 @router.get('')
 def get_calender_list(request) -> list[CalenderListOut]:
-    calender = get_object_or_404(Calender, ownser=request.user)
-    return [CalenderListOut(id=calender.id)]
+    calenders = Calender.objects.filter(owner=request.user)
+    return [CalenderListOut(id=str(calender.id)) for calender in calenders]
 
 
 @router.post('')
@@ -22,7 +22,7 @@ def create_calender(request) -> CreateCalenderOut:
     if Calender.MAX_COUNT < count:
         raise ValidationError(errors=f'calender count exceeds max count {count}/{Calender.MAX_COUNT}')
     calender = Calender.objects.create(owner=request.user)
-    return CalenderListOut(id=calender.id)
+    return CalenderListOut(id=str(calender.id))
 
 
 @router.get('/{calender_id}/posts')
@@ -74,7 +74,7 @@ def put_post_detail(request, calender_id: str, post_date: date, payload: PostDet
     )
     status_code = 201 if created else 200
     return status_code, PostDetailOut(
-        id=post.id,
+        id=str(post.id),
         image=post.image,
         post_date=post.post_date,
         emoji=post.emoji,
