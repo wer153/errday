@@ -1,10 +1,10 @@
 from datetime import date
 
 from django.shortcuts import get_object_or_404
-from ninja import Router
+from ninja import Router, UploadedFile
 from ninja.errors import ValidationError
 
-from calenders.dtos import PostListOut, PostDetailOut, PostDetailIn, Emoji, CreateCalenderOut, CalenderListOut
+from calenders.dtos import PostListOut, PostDetailOut, Emoji, CreateCalenderOut, CalenderListOut
 from calenders.models import Post, Calender
 
 router = Router()
@@ -39,8 +39,8 @@ def get_post_list(request, calender_id: str, start_date: date | None = None, end
     )
     return [
         PostListOut(
-            id=post.id,
-            thumbnail=post.thumbnail,
+            id=str(post.id),
+            thumbnail=post.thumbnail.url,
             post_date=post.post_date,
             emoji=post.emoji,
         )
@@ -57,25 +57,40 @@ def get_post_detail(request, calender_id: str, post_date: date):
         calender=calender_id,
     )
     return PostDetailOut(
-        id=post.id,
-        image=post.image,
+        id=str(post.id),
+        image=post.image.url,
         post_date=post.post_date,
         emoji=post.emoji,
     )
 
 
-@router.put('/{calender_id}/posts/{post_date}')
-def put_post_detail(request, calender_id: str, post_date: date, payload: PostDetailIn):
+@router.post('/{calender_id}/posts/{post_date}', response={200: PostDetailOut, 201: PostDetailOut})
+def put_post_detail(
+    request,
+    calender_id: str,
+    post_date: date,
+    images: list[UploadedFile],
+    emoji: Emoji = Emoji.DEFAULT,
+):
+    calender = Calender.objects.get(id=calender_id)
     post, created = Post.objects.update_or_create(
-        calender=calender_id,
+        calender=calender,
         post_date=post_date,
         user=request.user,
-        defaults=payload.dict(),
+        defaults={
+            'calender': calender,
+            'post_date': post_date,
+            'user': request.user,
+            'image': images[0],
+            'emoji': emoji.value,
+            'thumbnail': images[0],
+        },
     )
+
     status_code = 201 if created else 200
     return status_code, PostDetailOut(
         id=str(post.id),
-        image=post.image,
+        image=post.image.url,
         post_date=post.post_date,
         emoji=post.emoji,
     )
