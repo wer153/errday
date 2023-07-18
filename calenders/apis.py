@@ -19,7 +19,7 @@ def get_calender_list(request) -> list[CalenderListOut]:
 @router.post('')
 def create_calender(request) -> CreateCalenderOut:
     count = Calender.objects.filter(owner=request.user).count()
-    if Calender.MAX_COUNT < count:
+    if Calender.MAX_COUNT <= count:
         raise ValidationError(errors=f'calender count exceeds max count {count}/{Calender.MAX_COUNT}')
     calender = Calender.objects.create(owner=request.user)
     return CalenderListOut(id=str(calender.id))
