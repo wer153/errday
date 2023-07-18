@@ -25,4 +25,4 @@ COPY . .
 RUN python manage.py migrate
 
 # start server
-CMD [ "uvicorn", "seed.asgi:application", "0.0.0.0:8000"]
+CMD ["uvicorn", "seed.asgi:application", "0.0.0.0:8000"]
