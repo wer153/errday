@@ -5,7 +5,7 @@ FROM python:3.10.2-alpine
 WORKDIR /usr/src/app
 
 # set docker port
-EXPOSE 8080
+EXPOSE 8000
 
 # set environment variables
 # Prevents Python from writing pyc files to disc (equivalent to python -B option)
@@ -25,4 +25,4 @@ COPY . .
 RUN python manage.py migrate
 
 # start server
-CMD [ "python","manage.py","runserver","0.0.0.0:8080"]
+CMD [ "uvicorn", "seed.asgi:application", "0.0.0.0:8000"]
