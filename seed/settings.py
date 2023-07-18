@@ -22,6 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-nt#k9j!8i%twi8ru%6@^@s-izbftg3m_6#d2c12qbrpu!x(5c#'
 
+# AWS S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_SECURE_URLS = False       # use http instead of https
+AWS_QUERYSTRING_AUTH = False     # don't add complex authentication-related query parameters for requests
+
+AWS_S3_ACCESS_KEY_ID = 'AKIAVX5W5R3JAVAOM6H2'
+AWS_S3_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'narrabeen-seed'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
