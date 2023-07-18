@@ -1,28 +1,19 @@
-# pull official base image
-FROM python:3.10.2-alpine
+#
+FROM python:3.10
 
-# set work directory
-WORKDIR /usr/src/app
+#
+WORKDIR /code
 
-# set docker port
-EXPOSE 8000
+ENV DJANGO_SETTINGS_MODULE=seed.settings
+#
+COPY ./requirements.txt /code/requirements.txt
 
-# set environment variables
-# Prevents Python from writing pyc files to disc (equivalent to python -B option)
-ENV PYTHONDONTWRITEBYTECODE 1
-# Prevents Python from buffering stdout and stderr (equivalent to python -u option)
-ENV PYTHONUNBUFFERED 1
+#
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+#
+COPY . /code/
 
-# copy project
-COPY . .
-
-# run migrations
 RUN python manage.py migrate
 
-# start server
-CMD ["uvicorn", "seed.asgi:application", "0.0.0.0:8000"]
+CMD ["uvicorn", "seed.asgi:application"]
