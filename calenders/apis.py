@@ -72,6 +72,7 @@ def put_post_detail(
     images: list[UploadedFile],
     emoji: Emoji = Emoji.DEFAULT,
 ):
+    image = images[0]
     calender = Calender.objects.get(id=calender_id)
     post, created = Post.objects.update_or_create(
         calender=calender,
@@ -81,12 +82,11 @@ def put_post_detail(
             'calender': calender,
             'post_date': post_date,
             'user': request.user,
-            'image': images[0],
             'emoji': emoji.value,
-            'thumbnail': images[0],
         },
     )
-
+    post.image = image
+    post.save()
     status_code = 201 if created else 200
     return status_code, PostDetailOut(
         id=str(post.id),
