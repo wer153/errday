@@ -86,7 +86,7 @@ def put_post_detail(
         },
     )
     post.image = image
-    post.thumbnail = image
+    post.thumbnail = post.image
     post.save()
     status_code = 201 if created else 200
     return status_code, PostDetailOut(
