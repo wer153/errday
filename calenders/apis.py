@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.shortcuts import get_object_or_404
+from django.utils.timezone import localdate
 from ninja import Router, UploadedFile
 from ninja.errors import ValidationError
 
@@ -13,7 +14,7 @@ router = Router()
 @router.get('')
 def get_calender_list(request) -> list[CalenderListOut]:
     calenders = Calender.objects.filter(owner=request.user)
-    return [CalenderListOut(id=str(calender.id)) for calender in calenders]
+    return [CalenderListOut(id=str(calender.id),  joined_date=calender.joined_date) for calender in calenders]
 
 
 @router.post('')
@@ -21,8 +22,8 @@ def create_calender(request) -> CreateCalenderOut:
     count = Calender.objects.filter(owner=request.user).count()
     if Calender.MAX_COUNT <= count:
         raise ValidationError(errors=f'calender count exceeds max count {count}/{Calender.MAX_COUNT}')
-    calender = Calender.objects.create(owner=request.user)
-    return CalenderListOut(id=str(calender.id))
+    calender = Calender.objects.create(owner=request.user, joined_date=localdate())
+    return CalenderListOut(id=str(calender.id), joined_date=calender.joined_date)
 
 
 @router.get('/{calender_id}/posts')
