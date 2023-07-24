@@ -5,8 +5,12 @@ from ninja import Schema
 
 
 class Emoji(Enum):
-    DEFAULT: str = 'DEFAULT'
-
+    ANGRY: str = 'ANGRY'
+    SICK: str = 'SICK'
+    SAD: str = 'SAD
+    LOADING: str = 'LOADING'
+    HAPPY: str = 'HAPPY'
+    PEACEFUL: str = 'PEACFUL'
 
 class CalenderListOut(Schema):
     id: str
