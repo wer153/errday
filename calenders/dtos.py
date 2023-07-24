@@ -12,6 +12,7 @@ class Emoji(Enum):
     HAPPY: str = 'HAPPY'
     PEACEFUL: str = 'PEACFUL'
 
+
 class CalenderListOut(Schema):
     id: str
 
