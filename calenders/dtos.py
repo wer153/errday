@@ -15,6 +15,7 @@ class Emoji(Enum):
 
 class CalenderListOut(Schema):
     id: str
+    joined_date: date
 
 
 class CreateCalenderOut(Schema):
