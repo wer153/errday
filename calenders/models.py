@@ -12,6 +12,7 @@ class Calender(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(to=User, related_name='calenders', on_delete=models.PROTECT)
+    joined_date = models.DateField()
 
 
 class Post(models.Model):
