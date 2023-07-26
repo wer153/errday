@@ -32,7 +32,7 @@ class Post(models.Model):
 
 
 @receiver(post_delete, sender=Post)
-def add_to_inventory(_sender, instance, **kwargs):
+def add_to_inventory(sender, instance, **kwargs):
     instance.image.delete()
     instance.thumbnail.delete()
     instance.save()
