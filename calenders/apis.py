@@ -4,11 +4,12 @@ from django.shortcuts import get_object_or_404
 from django.utils.timezone import localdate
 from ninja import Router, UploadedFile
 from ninja.errors import ValidationError
+from ninja.security import django_auth
 
 from calenders.dtos import PostListOut, PostDetailOut, Emoji, CreateCalenderOut, CalenderListOut, CalenderDetailOut
 from calenders.models import Post, Calender
 
-router = Router()
+router = Router(auth=django_auth)
 
 
 @router.get('', response=list[CalenderListOut])
