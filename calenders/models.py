@@ -33,6 +33,10 @@ class Post(models.Model):
 
 @receiver(post_delete, sender=Post)
 def add_to_inventory(sender, instance, **kwargs):
-    instance.image.delete()
-    instance.thumbnail.delete()
-    instance.save()
+    """TODO: s3 acceess denied 오류
+
+    botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the DeleteObject operation: Access Denied
+    """
+    # instance.image.delete()
+    # instance.thumbnail.delete()
+    # instance.save()
