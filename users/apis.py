@@ -13,6 +13,7 @@ router = Router()
 @router.post('/signup')
 def user_signup(request, email: str, nick_name: str):
     user = signup(email=email, nick_name='', image=None)
+    login(request=request, user=user)
     return email
 
 
