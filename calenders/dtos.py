@@ -13,6 +13,11 @@ class Emoji(Enum):
     PEACEFUL: str = 'PEACFUL'
 
 
+class CalenderDetailOut(Schema):
+    id: str
+    joined_date: date
+
+
 class CalenderListOut(Schema):
     id: str
     joined_date: date

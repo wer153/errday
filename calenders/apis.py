@@ -5,28 +5,28 @@ from django.utils.timezone import localdate
 from ninja import Router, UploadedFile
 from ninja.errors import ValidationError
 
-from calenders.dtos import PostListOut, PostDetailOut, Emoji, CreateCalenderOut, CalenderListOut
+from calenders.dtos import PostListOut, PostDetailOut, Emoji, CreateCalenderOut, CalenderListOut, CalenderDetailOut
 from calenders.models import Post, Calender
 
 router = Router()
 
 
-@router.get('')
+@router.get('', response=list[CalenderListOut])
 def get_calender_list(request) -> list[CalenderListOut]:
     calenders = Calender.objects.filter(owner=request.user)
     return [CalenderListOut(id=str(calender.id),  joined_date=calender.joined_date) for calender in calenders]
 
 
-@router.post('')
+@router.post('', response=CalenderDetailOut)
 def create_calender(request) -> CreateCalenderOut:
     count = Calender.objects.filter(owner=request.user).count()
     if Calender.MAX_COUNT <= count:
         raise ValidationError(errors=f'calender count exceeds max count {count}/{Calender.MAX_COUNT}')
     calender = Calender.objects.create(owner=request.user, joined_date=localdate())
-    return CalenderListOut(id=str(calender.id), joined_date=calender.joined_date)
+    return CalenderDetailOut(id=str(calender.id), joined_date=calender.joined_date)
 
 
-@router.get('/{calender_id}/posts')
+@router.get('/{calender_id}/posts', response=list[PostListOut])
 def get_post_list(request, calender_id: str, start_date: date | None = None, end_date: date | None = None):
     date_filter = {}
     if start_date:
@@ -49,7 +49,7 @@ def get_post_list(request, calender_id: str, start_date: date | None = None, end
     ]
 
 
-@router.get('/{calender_id}/posts/{post_date}')
+@router.get('/{calender_id}/posts/{post_date}', response=PostDetailOut)
 def get_post_detail(request, calender_id: str, post_date: date):
     post: Post = get_object_or_404(
         Post,
