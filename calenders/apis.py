@@ -108,6 +108,5 @@ def delete_post_detail(request, calender_id: str, post_date: date):
         user=request.user,
         calender=calender_id,
     )
-    post.image.delete()
     post.delete()
     return None
