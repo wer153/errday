@@ -71,8 +71,9 @@ def put_post_detail(
     calender_id: str,
     post_date: date,
     images: list[UploadedFile],
-    emoji: Emoji = Emoji.DEFAULT,
+    emoji: Emoji | None = None,
 ):
+    emoji = emoji.value if emoji else ''
     image = images[0]
     calender = Calender.objects.get(id=calender_id)
     post, created = Post.objects.update_or_create(
@@ -83,7 +84,7 @@ def put_post_detail(
             'calender': calender,
             'post_date': post_date,
             'user': request.user,
-            'emoji': emoji.value,
+            'emoji': emoji,
         },
     )
     post.image = image
