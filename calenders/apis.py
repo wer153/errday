@@ -101,9 +101,12 @@ def put_post_detail(
 
 @router.delete('/{calender_id}/posts/{post_date}')
 def delete_post_detail(request, calender_id: str, post_date: date):
-    Post.objects.filter(
-        calender=calender_id,
-        user=request.user,
+    post: Post = get_object_or_404(
+        Post,
         post_date=post_date,
-    ).delete()
+        user=request.user,
+        calender=calender_id,
+    )
+    post.image.delete()
+    post.delete()
     return None
