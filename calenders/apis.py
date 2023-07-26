@@ -9,7 +9,7 @@ from ninja.security import django_auth
 from calenders.dtos import PostListOut, PostDetailOut, Emoji, CreateCalenderOut, CalenderListOut, CalenderDetailOut
 from calenders.models import Post, Calender
 
-router = Router(auth=django_auth)
+router = Router(auth=django_auth, csrf=True)
 
 
 @router.get('', response=list[CalenderListOut])
